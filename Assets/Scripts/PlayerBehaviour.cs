@@ -1,12 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EazyTools.SoundManager;
 
 public class PlayerBehaviour : MonoBehaviour {
 
-	public AudioClip dashSFX;
-	public AudioClip fallSFX;
+	private bool hit;
+	Rigidbody2D rb;
+	SpriteEffector spriteEffector;
+	public float walkSpeed = 5;
+	public Animator animator;
+
+	float dashDirX = 0;
+	float dashDirY = -1;
+	public float dashSpeed = 10;
+	public float dashCooldown = 1.2f;
+	bool dashEnabled = true;
+
+	void Start () 
+	{
+		rb = GetComponent<Rigidbody2D> ();
+		animator = GetComponent<Animator> ();
+		spriteEffector = GetComponent<SpriteEffector> ();
+	}
+
+	void Update() {
+		transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.y);
+	}
 
 	public void Reset ()
 	{
@@ -14,10 +33,6 @@ public class PlayerBehaviour : MonoBehaviour {
 		groundChecker.Reset ();
 		animator.Rebind ();
 		rb.velocity = Vector2.zero;
-	}
-
-	void Update() {
-		transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.y);
 	}
 
 	public void StartStun ()
@@ -34,28 +49,11 @@ public class PlayerBehaviour : MonoBehaviour {
 		rb.velocity = Vector2.zero;
 
 		if(!animator.GetCurrentAnimatorStateInfo(0).IsTag("Death"))
-			SoundManager.PlaySound (fallSFX);
+			AudioManager.playSFX("fall", 0.75f, false);
 	}
 
 	public void DestroySelf (){
 		this.gameObject.SetActive(false);
-	}
-
-	private bool hit;
-	Rigidbody2D rb;
-	public float walkSpeed = 5;
-	public Animator animator;
-
-	bool dashing = false;
-	float dashDirX = 0;
-	float dashDirY = -1;
-	public float dashSpeed = 10;
-	float dashTimestamp = 0;
-
-	void Start () 
-	{
-		rb = GetComponent<Rigidbody2D> ();
-		animator = GetComponent<Animator> ();
 	}
 
 	public void Hit ()
@@ -67,22 +65,27 @@ public class PlayerBehaviour : MonoBehaviour {
 	public void StartDash(float dirX, float dirY){
 		if (animator.GetCurrentAnimatorStateInfo (0).IsTag ("Attack") 
 		|| animator.GetCurrentAnimatorStateInfo (0).IsTag ("Death") 
-		|| dashing 
-		|| Time.timeSinceLevelLoad < dashTimestamp + 1) 
+		|| animator.GetBool ("Dashing") 
+		|| !dashEnabled) 
 			return;
 
-		SoundManager.PlaySound (dashSFX);
-		dashing = true;
+		// SoundManager.PlaySound (dashSFX);
+		dashEnabled = false;
+		AudioManager.playSFX("dash", 0.75f, false);
 		dashDirX = dirX;
 		dashDirY = dirY;
 		animator.SetBool ("Dashing", true);
 		Invoke ("StopDash", 0.2f);
-		dashTimestamp = Time.timeSinceLevelLoad;
 	}
 
 	public void StopDash (){
 		animator.SetBool ("Dashing", false);
-		dashing = false;
+		Invoke ("EnableDash", dashCooldown);
+	}
+
+	public void EnableDash(){
+		spriteEffector.FlashGreenOnce();
+		dashEnabled = true;
 	}
 
 	void Flip (Vector2 velocity) 
@@ -124,7 +127,7 @@ public class PlayerBehaviour : MonoBehaviour {
 			return;
 		}
 
-		if (dashing) {
+		if (animator.GetBool ("Dashing")) {
 			Dash ();
 		}else {
 			Walk (velocity);

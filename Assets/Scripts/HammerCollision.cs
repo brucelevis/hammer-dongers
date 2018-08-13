@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EazyTools.SoundManager;
 
 public class HammerCollision : MonoBehaviour {
 
 	private GridBehaviour grid;
-	public AudioClip hitSFX;
 	void SetGrid ()
 	{
 		grid = GameObject.FindGameObjectWithTag ("Grid").GetComponent<GridBehaviour> ();
@@ -18,13 +16,12 @@ public class HammerCollision : MonoBehaviour {
 	}
 
 
-
 	void OnTriggerEnter2D(Collider2D collider) {
 		if (grid == null)
 			SetGrid ();
 
 		if (collider.gameObject.tag == "Tile") {
-			SoundManager.PlaySound (hitSFX, 0.75f);
+			AudioManager.playSFX("hit", 0.65f, true);
 			var tile = collider.GetComponent<TileBehaviour> ();
 
 			tile.Crack ();
@@ -32,10 +29,10 @@ public class HammerCollision : MonoBehaviour {
 		}
 
 		if (collider.gameObject.tag == "Player") {
+			AudioManager.playSFX("hit", 0.65f, true);
 			var player = collider.GetComponentInParent<PlayerBehaviour> ();
-			if (player.animator.GetBool ("Dashing"))
-				return;
-			player.StartStun ();
+			if (!player.animator.GetBool ("Dashing"))
+				player.StartStun ();
 		}
 	}
 }

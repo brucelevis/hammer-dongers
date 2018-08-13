@@ -1,13 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EazyTools.SoundManager;
 
 public class TileBehaviour : MonoBehaviour {
 	public bool cracked;
 	Animator animator;
 	public int x,y;
-	public AudioClip breakSFX;
 
 	void Start () {
 		animator = GetComponent<Animator> ();	
@@ -18,7 +16,7 @@ public class TileBehaviour : MonoBehaviour {
 
 	void PlaySfx ()
 	{
-		SoundManager.PlaySound (breakSFX, 0.75f);
+		AudioManager.playSFX("break", 0.75f, true);
 	}
 
 	public void Crack()

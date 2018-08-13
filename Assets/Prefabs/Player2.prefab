@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 114837709563493802}
   - component: {fileID: 114635970727700288}
   - component: {fileID: 95043196292279294}
+  - component: {fileID: 114703807886161556}
   m_Layer: 0
   m_Name: Player2
   m_TagString: PlayableCharacter
@@ -217,7 +218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491f63d944847e5449950e566c62db11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitSFX: {fileID: 8300000, guid: 1d1ed13b28dff6a4aa7f3f0e7eccaa45, type: 3}
 --- !u!114 &114635970727700288
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -229,11 +229,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8982aebf7437cf7418bdf20bfb8f0094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashSFX: {fileID: 8300000, guid: 345fd016d6fb3e449972a33d95ff69ac, type: 3}
-  fallSFX: {fileID: 8300000, guid: 76b305ee18909fc4aaee21e1d481ebff, type: 3}
   walkSpeed: 5
   animator: {fileID: 0}
   dashSpeed: 15
+  dashCooldown: 1
+--- !u!114 &114703807886161556
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1518325370416742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2dc6c93d2aed64eb83d873f352560d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorFlashDuration: 0.1
 --- !u!114 &114837709563493802
 MonoBehaviour:
   m_ObjectHideFlags: 1
