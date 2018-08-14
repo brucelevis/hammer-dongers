@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using EazyTools.SoundManager;
+using UnityEngine.UI;
 
 public class MatchManager : MonoBehaviour {
 
@@ -23,11 +24,20 @@ public class MatchManager : MonoBehaviour {
 		
 		players = GameObject.FindGameObjectsWithTag("PlayableCharacter");
 
+
 		foreach(GameObject player in players){
 			var index = player.GetComponent<PlayerInput> ().playerPrefix;
-			if(!scores.ContainsKey(index))
+			if(!scores.ContainsKey(index)){
 				scores [index] = 0;
+			}
+
+			UpdateScoreInUI(index, ""+scores [index]);
 		}
+	}
+
+	void UpdateScoreInUI(int playerIndex, string newText){
+		var scoreUI = GameObject.Find("Score"+playerIndex);
+		scoreUI.GetComponent<Text>().text = newText;
 	}
 
 	void Reset ()
@@ -62,6 +72,7 @@ public class MatchManager : MonoBehaviour {
 		else if (standingPlayers.Count == 1){
 			int playerPrefix = standingPlayers[0].GetComponent<PlayerInput>().playerPrefix;
 			scores [playerPrefix]++;
+			UpdateScoreInUI(playerPrefix, ""+scores [playerPrefix]);
 
 			if (scores [playerPrefix] == 5) {
 				SetVictoryMessage (playerPrefix);
