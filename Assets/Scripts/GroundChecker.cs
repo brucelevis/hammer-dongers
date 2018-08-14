@@ -21,7 +21,7 @@ public class GroundChecker : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		if (isEmpty ()) 
+		if (isEmpty () && Time.timeSinceLevelLoad > 0.04f) 
 		{
 			player.Die ();
 		}
