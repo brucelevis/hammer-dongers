@@ -21,7 +21,7 @@ public class HammerCollision : MonoBehaviour {
 			SetGrid ();
 
 		if (collider.gameObject.tag == "Tile") {
-			AudioManager.playSFX("hit", 0.65f, true);
+			AudioManager.playSFX("hit", 0.4f, true);
 			var tile = collider.GetComponent<TileBehaviour> ();
 
 			tile.Crack ();
@@ -29,7 +29,7 @@ public class HammerCollision : MonoBehaviour {
 		}
 
 		if (collider.gameObject.tag == "Player") {
-			AudioManager.playSFX("hit", 0.65f, true);
+			AudioManager.playSFX("hit", 0.4f, true);
 			var player = collider.GetComponentInParent<PlayerBehaviour> ();
 			if (!player.animator.GetBool ("Dashing"))
 				player.StartStun ();

@@ -45,9 +45,10 @@ public class PlayerBehaviour : MonoBehaviour {
 		
 		if (animator.GetBool ("Dashing"))
 			return;
+
 		animator.SetTrigger ("Fall");
 		rb.velocity = Vector2.zero;
-
+		
 		if(!animator.GetCurrentAnimatorStateInfo(0).IsTag("Death"))
 			AudioManager.playSFX("fall", 0.75f, false);
 	}
