@@ -9,6 +9,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	SpriteEffector spriteEffector;
 	public float walkSpeed = 5;
 	public Animator animator;
+	private bool dying = false;
 
 	float dashDirX = 0;
 	float dashDirY = -1;
@@ -38,19 +39,20 @@ public class PlayerBehaviour : MonoBehaviour {
 	public void StartStun ()
 	{
 		animator.SetTrigger ("Stun");
+		//to disrespect
+		dying = false;
 	}
 
 	public void Die ()
 	{
 		
-		if (animator.GetBool ("Dashing"))
+		if (animator.GetBool ("Dashing") || dying)
 			return;
 
-		animator.SetTrigger ("Fall");
+		dying = true;
 		rb.velocity = Vector2.zero;
-		
-		if(!animator.GetCurrentAnimatorStateInfo(0).IsTag("Death"))
-			AudioManager.playSFX("fall", 0.75f, false);
+		AudioManager.playSFX("fall", 0.75f, false);
+		animator.SetTrigger ("Fall");
 	}
 
 	public void DestroySelf (){
@@ -67,7 +69,8 @@ public class PlayerBehaviour : MonoBehaviour {
 		if (animator.GetCurrentAnimatorStateInfo (0).IsTag ("Attack") 
 		|| animator.GetCurrentAnimatorStateInfo (0).IsTag ("Death") 
 		|| animator.GetBool ("Dashing") 
-		|| !dashEnabled) 
+		|| !dashEnabled
+		|| dying) 
 			return;
 
 		// SoundManager.PlaySound (dashSFX);
@@ -123,7 +126,9 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	public void Move (Vector2 velocity) {
 
-		if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsTag("Death")){
+		if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") 
+		|| animator.GetCurrentAnimatorStateInfo(0).IsTag("Death")
+		|| dying){
 			rb.velocity = velocity = Vector2.zero;
 			return;
 		}
