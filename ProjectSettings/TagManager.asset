@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Tile
   - Grid
+  - PlayableCharacter
+  - Ground Hitbox
+  - Player Hitbox
   layers:
   - Default
   - TransparentFX

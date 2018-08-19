@@ -27,8 +27,8 @@ public class HammerCollision : MonoBehaviour {
 			tile.Crack ();
 			grid.Crack (tile);
 		}
-
-		if (collider.gameObject.tag == "Player") {
+	
+		if (collider.gameObject.tag == "Player Hitbox") {
 			AudioManager.playSFX("hit", 0.4f, true);
 			var player = collider.GetComponentInParent<PlayerBehaviour> ();
 			if (!player.animator.GetBool ("Dashing"))
