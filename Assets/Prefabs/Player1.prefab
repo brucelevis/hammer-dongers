@@ -75,6 +75,8 @@ GameObject:
   - component: {fileID: 114495976260274526}
   - component: {fileID: 95811770934334976}
   - component: {fileID: 114601753839864750}
+  - component: {fileID: 114330468579143916}
+  - component: {fileID: 114737942200041706}
   m_Layer: 0
   m_Name: Player1
   m_TagString: PlayableCharacter
@@ -285,6 +287,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefix: 1
+--- !u!114 &114330468579143916
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1839741341962722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d55825d822be794c8312b37bd38ed3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColors: []
+  swapColors: []
 --- !u!114 &114495976260274526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -312,6 +327,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorFlashDuration: 0.1
+--- !u!114 &114737942200041706
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1839741341962722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d55825d822be794c8312b37bd38ed3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColors: []
+  swapColors: []
 --- !u!212 &212942965847899038
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -327,7 +355,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b925fd77cb4050c439b72c58e4e851e9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

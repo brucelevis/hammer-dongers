@@ -5,7 +5,7 @@ Shader "Unlit/Color Replacement"
 	Properties
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-        _SwapTex("Color Data", 2D) = "transparent" {}
+        _SwapTex("_SwapTex", 2D) = "transparent" {}
         _Color ("Tint", Color) = (1,1,1,1)
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
     }
