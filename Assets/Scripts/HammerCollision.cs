@@ -7,7 +7,7 @@ public class HammerCollision : MonoBehaviour {
 	private GridBehaviour grid;
 	void SetGrid ()
 	{
-		grid = GameObject.FindGameObjectWithTag ("Grid").GetComponent<GridBehaviour> ();
+		grid = (GridBehaviour)FindObjectOfType(typeof(GridBehaviour));
 	}
 
 	void Awake() {

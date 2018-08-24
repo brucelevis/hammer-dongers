@@ -5,13 +5,13 @@ using UnityEngine;
 public class TileBehaviour : MonoBehaviour {
 	public bool cracked;
 	Animator animator;
-	public int x,y;
+	public float x, y;
 
 	void Start () {
 		animator = GetComponent<Animator> ();	
 		animator.enabled = false;
-		x = (int)Mathf.Floor(transform.position.x);
-		y = (int)Mathf.Floor(transform.position.y);
+		x = transform.position.x;
+		y = transform.position.y;
 	}
 
 	void PlaySfx ()
@@ -32,7 +32,8 @@ public class TileBehaviour : MonoBehaviour {
 	public override bool Equals (object other)
 	{
 		TileBehaviour tile = (TileBehaviour)other;
-		return tile.x == x && tile.y == y;
+		return (tile.x >= x - 0.1f && tile.x <= x + 0.1f
+				&& tile.y >= y - 0.1f && tile.y <= y + 0.1f);
 	}
 
 	public void InvokeCrack (float time)
