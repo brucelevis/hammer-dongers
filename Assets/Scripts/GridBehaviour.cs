@@ -93,7 +93,8 @@ public class GridBehaviour : MonoBehaviour {
 	private TileBehaviour GetTile(float x, float y) {
 		foreach (Transform child in transform){
 			// if (Mathf.Floor(child.position.x) == x && Mathf.Floor(child.position.y) == y)
-			if (child.position.x >= x - 0.1f && child.position.x <= x + 0.1f
+			if (child.tag == "Tile"
+				&&child.position.x >= x - 0.1f && child.position.x <= x + 0.1f
 				&& child.position.y >= y - 0.1f && child.position.y <= y + 0.1f)
 				return child.GetComponent<TileBehaviour>();
 		}
