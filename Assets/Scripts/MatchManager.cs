@@ -26,7 +26,7 @@ public class MatchManager : MonoBehaviour {
 
 
 		foreach(GameObject player in players){
-			var index = player.GetComponent<PlayerInput> ().playerPrefix;
+			var index = player.GetComponent<PlayerInput> ().PlayerPrefix;
 			if(!scores.ContainsKey(index)){
 				scores [index] = 0;
 			}
@@ -70,7 +70,7 @@ public class MatchManager : MonoBehaviour {
 		if (standingPlayers.Count == 0) 
 			Reset ();
 		else if (standingPlayers.Count == 1){
-			int playerPrefix = standingPlayers[0].GetComponent<PlayerInput>().playerPrefix;
+			int playerPrefix = standingPlayers[0].GetComponent<PlayerInput>().PlayerPrefix;
 			scores [playerPrefix]++;
 			UpdateScoreInUI(playerPrefix, ""+scores [playerPrefix]);
 
