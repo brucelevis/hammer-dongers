@@ -17,7 +17,7 @@ public class MatchManager : MonoBehaviour {
 	public static Dictionary<int, int> scores = new Dictionary<int, int>();
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 
 		if(soundtrackAudioId == -1)
 			soundtrackAudioId = SoundManager.PlayMusic(soundtrack, 0.1f, true, true, 1, 1);
@@ -62,6 +62,7 @@ public class MatchManager : MonoBehaviour {
 	}
 
 	void Update () {
+		
 		if (gameover)
 			return;
 		

@@ -13,15 +13,27 @@ public class PlayerFactory : MonoBehaviour {
 	PlayerActions keyboardListenerPlayerTwo;
 	PlayerActions joystickListener;
 
-	void OnEnable()
+	void Awake()
 	{
 		keyboardListenerPlayerOne = PlayerActions.CreateWithKeyboardBindingsForPlayerOne();
 		keyboardListenerPlayerTwo = PlayerActions.CreateWithKeyboardBindingsForPlayerTwo();
 		joystickListener = PlayerActions.CreateWithJoystickBindings();
-	
-		Debug.Log (InputManager.Devices.Count + " Devices Found");
-		CreatePlayer (null, keyboardListenerPlayerOne);
-		CreatePlayer (null, keyboardListenerPlayerTwo);
+
+		var container = PlayerConfigurationContainer.getInstance ();
+
+		//hardcoded configs
+		//joystickListener.Device = InputManager.Devices[0];
+
+		PlayerActions p1a = keyboardListenerPlayerOne;
+		//PlayerActions p1a = joystickListener;
+		PlayerInputConfiguration p1 = new PlayerInputConfiguration (0, p1a);
+		PlayerInputConfiguration p2 = new PlayerInputConfiguration (1, keyboardListenerPlayerTwo);
+
+		container.Configurations.Add (p1);
+		container.Configurations.Add (p2);
+
+		foreach (PlayerInputConfiguration config in container.Configurations) 
+			CreatePlayer (config);
 	}
 
 	void OnDisable()
@@ -30,22 +42,16 @@ public class PlayerFactory : MonoBehaviour {
 		keyboardListenerPlayerOne.Destroy();
 		keyboardListenerPlayerTwo.Destroy();
 	}
-		
-	PlayerInput CreatePlayer( InputDevice inputDevice, PlayerActions actions )
+
+	PlayerInput CreatePlayer( PlayerInputConfiguration configuration )
 	{
 		if (players.Count < maxPlayers)
 		{
-			var playerPosition = playerPositions[players.Count];
-			var gameObject = (GameObject) Instantiate( playerPrefabs[players.Count], playerPosition, Quaternion.identity );
+			var playerPosition = playerPositions[configuration.PlayerIndex];
+			var gameObject = (GameObject) Instantiate( playerPrefabs[configuration.PlayerIndex], playerPosition, Quaternion.identity );
 			var player = gameObject.GetComponent<PlayerInput>();
 
-			if(actions == null)
-				actions = PlayerActions.CreateWithJoystickBindings();
-
-			player.Actions = actions;
-
-			if (inputDevice != null)
-				actions.Device = inputDevice;
+			player.Actions = configuration.Actions;
 
 			players.Add( player );
 			gameObject.name = "Player" + players.Count;

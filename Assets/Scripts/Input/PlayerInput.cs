@@ -19,9 +19,9 @@ public class PlayerInput : MonoBehaviour {
 	}
 	
 	void Update () {
+		
 		if (Actions == null)
 			return;
-		
 		if(Time.timeSinceLevelLoad > 1)
 			InterpretInput();
 	}
@@ -34,6 +34,16 @@ public class PlayerInput : MonoBehaviour {
 		player.Move (new Vector2(magnitudeX, magnitudeY));
 	}
 
+	float Normalize (float scalar)
+	{
+		
+		if (Mathf.Abs(scalar) < 0.2)
+			return 0;
+		if (Mathf.Abs(scalar) > 0.5f)
+			return Mathf.RoundToInt(scalar);
+		return scalar;
+	}
+
 	private void InterpretInput () {
 		if (Actions.Smash.WasPressed) {
 			player.Hit ();
@@ -42,8 +52,8 @@ public class PlayerInput : MonoBehaviour {
 			return;
 		}
 
-		magnitudeY = Actions.Move.Y;
-		magnitudeX = Actions.Move.X;
+		magnitudeY = Normalize (Actions.Move.Y);
+		magnitudeX = Normalize (Actions.Move.X);
 
 		if (Actions.Dash.WasPressed) 
 			player.StartDash (lastDirectionX, lastDirectionY);

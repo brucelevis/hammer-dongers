@@ -31,8 +31,8 @@ public class PlayerActions : PlayerActionSet
 		actions.Right.AddDefaultBinding( Key.D );
 		actions.Left.AddDefaultBinding( Key.A );
 
-		actions.Smash.AddDefaultBinding( Key.LeftShift);
-		actions.Dash.AddDefaultBinding( Key.Shift );
+		actions.Smash.AddDefaultBinding( Key.Space);
+		actions.Dash.AddDefaultBinding( Key.LeftShift );
 
 		return actions;
 	}
