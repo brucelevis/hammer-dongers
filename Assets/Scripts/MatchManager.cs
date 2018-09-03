@@ -75,7 +75,7 @@ public class MatchManager : MonoBehaviour {
 			scores [playerPrefix]++;
 			UpdateScoreInUI(playerPrefix, ""+scores [playerPrefix]);
 
-			if (scores [playerPrefix] == 1) {
+			if (scores [playerPrefix] == 3) {
 				SetVictoryMessage (playerPrefix);
 				return;
 			}
