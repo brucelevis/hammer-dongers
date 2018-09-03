@@ -128,7 +128,7 @@ public class CharacterSelectInputBehaviour : MonoBehaviour
 	}
 
 	void StartGame () {
-		SceneManager.LoadScene ("Scene 2");
+		SceneManager.LoadScene ("Scene 3");
 	}
 
 
