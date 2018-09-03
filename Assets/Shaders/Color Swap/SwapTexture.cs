@@ -18,7 +18,6 @@ public class SwapTexture : MonoBehaviour {
 		   || index >= targetColors.Count
 		   || index >= swapColors.Count)
 			return;
-		Debug.Log (targetColors [index].r);
 		SwapColor (targetColors[index].r, swapColors[index]);
 	}
 

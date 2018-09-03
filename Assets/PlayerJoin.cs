@@ -6,6 +6,7 @@ public class PlayerJoin : MonoBehaviour {
 
 	public Sprite[] portraitImages;
 	PortraitManager[] portraitBanners;
+	CharacterSelectActions actions;
 
 	void Start () {
 		portraitBanners = GetComponentsInChildren<PortraitManager>();
@@ -15,9 +16,19 @@ public class PlayerJoin : MonoBehaviour {
 	void Update () {
 		
 	}
-	
 
-	void Join(){
-		
+	PortraitManager GetAvailableBanner(){
+		foreach(PortraitManager portrait in portraitBanners){
+			if(portrait.available)
+				return portrait;
+		}
+		return null;
+	}
+
+	public void Join(int colorIndex, CharacterSelectActions bannerActions){
+		var banner = GetAvailableBanner ();
+		banner.Join (portraitImages[colorIndex], bannerActions, colorIndex);
 	}
 }
+
+

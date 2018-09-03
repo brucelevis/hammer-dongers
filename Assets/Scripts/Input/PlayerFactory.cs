@@ -21,17 +21,6 @@ public class PlayerFactory : MonoBehaviour {
 
 		var container = PlayerConfigurationContainer.getInstance ();
 
-		//hardcoded configs
-		//joystickListener.Device = InputManager.Devices[0];
-
-		PlayerActions p1a = keyboardListenerPlayerOne;
-		//PlayerActions p1a = joystickListener;
-		PlayerInputConfiguration p1 = new PlayerInputConfiguration (0, p1a);
-		PlayerInputConfiguration p2 = new PlayerInputConfiguration (1, keyboardListenerPlayerTwo);
-
-		container.Configurations.Add (p1);
-		container.Configurations.Add (p2);
-
 		foreach (PlayerInputConfiguration config in container.Configurations) 
 			CreatePlayer (config);
 	}
@@ -49,6 +38,10 @@ public class PlayerFactory : MonoBehaviour {
 		{
 			var playerPosition = playerPositions[configuration.PlayerIndex];
 			var gameObject = (GameObject) Instantiate( playerPrefabs[configuration.PlayerIndex], playerPosition, Quaternion.identity );
+
+			var swap = gameObject.GetComponent<SwapTexture> ();
+			swap.swapColors = CharacterColors.GetPalette (configuration.PlayerIndex);
+
 			var player = gameObject.GetComponent<PlayerInput>();
 
 			player.Actions = configuration.Actions;

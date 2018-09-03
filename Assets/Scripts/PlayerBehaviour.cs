@@ -141,8 +141,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	}
 
 	void Dash() {
-		var normalized = Vector3.Normalize (new Vector3(dashDirX, dashDirY, -1));
-		Vector2 velocity = new Vector2 (normalized.x, normalized.y);
+		Vector2 velocity = new Vector2 (dashDirX, dashDirY);
 		rb.velocity = velocity * dashSpeed;
 		if (rb.velocity.x != 0 && rb.velocity.y != 0)
 			rb.velocity *= 0.65f;

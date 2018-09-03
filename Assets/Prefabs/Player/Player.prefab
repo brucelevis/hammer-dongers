@@ -307,7 +307,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d55825d822be794c8312b37bd38ed3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetColors: []
+  targetColors:
+  - serializedVersion: 2
+    rgba: 4290832530
+  - serializedVersion: 2
+    rgba: 4290290767
+  - serializedVersion: 2
+    rgba: 4286933068
+  - serializedVersion: 2
+    rgba: 4284366650
   swapColors: []
 --- !u!114 &114621435537154420
 MonoBehaviour:

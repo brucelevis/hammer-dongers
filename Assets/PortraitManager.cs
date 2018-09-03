@@ -3,29 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PortraitManager : MonoBehaviour {
-
-	public int defaultPortrait = 0;
-
-	SpriteRenderer portraitRenderer;
+	
+	public bool available = true;
+	CharacterSelectActions actions;
+	public SpriteRenderer portraitRenderer;
+	public int CharacterIndex;
 	Animator anim;
+	PlayerConfigurationContainer container;
 
 	// Use this for initialization
 	void Start () {
-		portraitRenderer = GetComponentInChildren<SpriteRenderer>();
+		container = PlayerConfigurationContainer.getInstance ();
 		anim = GetComponent<Animator>();
 	}
 
-	public void join(Sprite portrait){
-		portraitRenderer.sprite =portrait;
-		anim.SetTrigger("Join");
+	void Update() {
+		if (actions == null)
+			return;
+		
+		if (actions.Leave.WasPressed) {
+			Leave ();
+			return;
+		}
+
+		if (actions.ChangeLeft.WasPressed || actions.ChangeRight.WasPressed)
+			SwitchPortrait ();
 	}
 
-	public void leave(){
+	public void Join(Sprite portrait, CharacterSelectActions actions, int characterIndex){
+		portraitRenderer.sprite = portrait;
+		anim.SetTrigger("Join");
+		available = false;
+		this.actions = actions;
+		CharacterIndex = characterIndex;
+	}
+
+	public void Leave(){
 		anim.SetTrigger("Leave");
 		portraitRenderer.sprite = null;
+		available = true;
+		actions = null;
+
+		container.Remove (CharacterIndex);
 	}
 
-	public void switchPortrait(Sprite portrait){
-		portraitRenderer.sprite =portrait;
+	public void SwitchPortrait(){
+		var index = container.GetNextAvailablePlayerIndex (CharacterIndex);
+
+		if (index == -1)
+			return;
+
+		var config = container.GetConfig (CharacterIndex);
+		container.Remove (CharacterIndex);
+		config.PlayerIndex = index;
+		container.Configurations.Add (config);
+		CharacterIndex = index;
+		var parentPortraits = GetComponentInParent<PlayerJoin> ().portraitImages;
+		portraitRenderer.sprite = parentPortraits[index];
+		
 	}
 }

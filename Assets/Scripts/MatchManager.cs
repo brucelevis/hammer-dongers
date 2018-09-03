@@ -36,8 +36,8 @@ public class MatchManager : MonoBehaviour {
 	}
 
 	void UpdateScoreInUI(int playerIndex, string newText){
-		var scoreUI = GameObject.Find("Score"+playerIndex);
-		scoreUI.GetComponent<Text>().text = newText;
+		//var scoreUI = GameObject.Find("Score"+playerIndex);
+		//scoreUI.GetComponent<Text>().text = newText;
 	}
 
 	void Reset ()
