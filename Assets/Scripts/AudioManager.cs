@@ -20,6 +20,10 @@ public class AudioManager : MonoBehaviour {
 	
 	public static void playSFX (string name, float volume, bool cutMultiple){
 
+		if(audioSource.clip != null)
+			if(audioSource.clip.name == name && audioSource.time < audioSource.clip.length/2)
+				return;
+
 		if(cutMultiple){
 			var sfx = sfxByName[name];
 			audioSource.clip = sfx;
