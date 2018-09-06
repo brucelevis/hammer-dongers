@@ -142,17 +142,18 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	void Dash() {
 		Vector2 velocity = new Vector2 (dashDirX, dashDirY);
+		float length = Mathf.Sqrt((dashDirX*dashDirX) + (dashDirY + dashDirY));
+		Vector2 unit = velocity / length;
+		velocity.Normalize();
 		rb.velocity = velocity * dashSpeed;
-		if (rb.velocity.x != 0 && rb.velocity.y != 0)
-			rb.velocity *= 0.65f;
+
 		animator.SetBool ("Dashing", true);
 		FlipToMatchVelocity (velocity);
 	}
 
 	void Walk(Vector2 velocity){
+		velocity.Normalize ();
 		rb.velocity = velocity * walkSpeed;
-		if (rb.velocity.x != 0 && rb.velocity.y != 0)
-			rb.velocity *= 0.75f;
 		SetMovementAnimation (velocity);
 		FlipToMatchVelocity (velocity);
 	}
