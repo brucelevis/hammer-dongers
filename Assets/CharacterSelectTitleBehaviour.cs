@@ -23,8 +23,6 @@ public class CharacterSelectTitleBehaviour : MonoBehaviour {
 				takenSpots++;
 		}
 
-		Debug.Log(takenSpots);
-
 		if(takenSpots >= 2)
 			anim.SetBool("Ready", true);
 		else

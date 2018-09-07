@@ -6,6 +6,8 @@ public class TileBehaviour : MonoBehaviour {
 	public bool cracked;
 	Animator animator;
 	public float x, y;
+	public float timer = 3;
+	public int CollisionCounter = 0;
 
 	void Start () {
 		animator = GetComponent<Animator> ();	
@@ -19,7 +21,7 @@ public class TileBehaviour : MonoBehaviour {
 		AudioManager.playSFX("break", 0.75f, true);
 	}
 
-	public void Crack()
+	public void Crack ()
 	{
 		if (cracked)
 			return;
@@ -27,7 +29,13 @@ public class TileBehaviour : MonoBehaviour {
 		cracked = true;
 	}
 
+	public void Update () {
+		if (CollisionCounter > 0) 
+			timer -= Time.deltaTime;
 
+		if (timer <= 0)
+			Crack ();
+	}
 
 	public override bool Equals (object other)
 	{
@@ -39,6 +47,22 @@ public class TileBehaviour : MonoBehaviour {
 	public void InvokeCrack (float time)
 	{
 		Invoke ("Crack", time);
+	}
+
+
+	void OnTriggerEnter2D(Collider2D col)
+	{
+		if (Time.timeSinceLevelLoad < 1)
+			return;
+		
+		if (col.gameObject.tag == "Ground Hitbox") 
+			CollisionCounter++;
+	}
+
+	void OnTriggerExit2D(Collider2D col)
+	{
+		if (col.gameObject.tag == "Ground Hitbox")
+			CollisionCounter--;
 	}
 
 	public override int GetHashCode ()
