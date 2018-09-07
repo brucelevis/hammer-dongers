@@ -25,17 +25,27 @@ public class TileBehaviour : MonoBehaviour {
 	{
 		if (cracked)
 			return;
+		
 		animator.enabled = true;
 		cracked = true;
 	}
 
 	public void Update () {
+		ConsumeTimer ();
+	}
+
+	void ConsumeTimer ()
+	{
+		if (Time.timeSinceLevelLoad < 2)
+			return; 
+		
 		if (CollisionCounter > 0) 
 			timer -= Time.deltaTime;
-
+		
 		if (timer <= 0)
 			Crack ();
 	}
+
 
 	public override bool Equals (object other)
 	{
@@ -52,9 +62,6 @@ public class TileBehaviour : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		if (Time.timeSinceLevelLoad < 1)
-			return;
-		
 		if (col.gameObject.tag == "Ground Hitbox") 
 			CollisionCounter++;
 	}
