@@ -72,15 +72,15 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300024, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
+      value: {fileID: 21300044, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
     - time: 0.083333336
-      value: {fileID: 21300026, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
+      value: {fileID: 21300046, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
     - time: 0.13333334
-      value: {fileID: 21300028, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
+      value: {fileID: 21300048, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
     - time: 0.6666667
-      value: {fileID: 21300030, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
+      value: {fileID: 21300050, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
     - time: 0.71666664
-      value: {fileID: 21300030, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
+      value: {fileID: 21300050, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -134,11 +134,11 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300024, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
-    - {fileID: 21300026, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
-    - {fileID: 21300028, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
-    - {fileID: 21300030, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
-    - {fileID: 21300030, guid: af0ef89423b7ab442a80a7e395c4cf1f, type: 3}
+    - {fileID: 21300044, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
+    - {fileID: 21300046, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
+    - {fileID: 21300048, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
+    - {fileID: 21300050, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
+    - {fileID: 21300050, guid: 2968730ab44524947b23464ab68ad7c2, type: 3}
     - {fileID: 21300008, guid: 23d8434e0430e0540b62d33d5729f0d8, type: 3}
     - {fileID: 21300010, guid: 23d8434e0430e0540b62d33d5729f0d8, type: 3}
     - {fileID: 21300012, guid: 23d8434e0430e0540b62d33d5729f0d8, type: 3}
