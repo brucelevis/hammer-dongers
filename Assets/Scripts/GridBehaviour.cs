@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using CreativeSpore.SuperTilemapEditor;
 
 public class GridBehaviour : MonoBehaviour {
 
 	public Vector2[] spawnPoints = { new Vector2(-7, 0.4f), new Vector2(7, 0.4f)};
 	List<List<TileBehaviour>> subsets;
-
+	STETilemap tilemap;
+	
 	void Start() {
 		subsets = new List<List<TileBehaviour>> ();
+		tilemap = GameObject.Find("Grid").GetComponent<STETilemap>();
+		var goo = GameObject.FindWithTag("Grid");
 	}
 
 	public void Crack (TileBehaviour origin)
@@ -73,6 +77,16 @@ public class GridBehaviour : MonoBehaviour {
 			GetTile (origin.x + 1, origin.y)
 		};
 	}
+
+	// private float rayLength = 1.2f;
+	// private RaycastHit2D rayHitUp, rayHitDown, rayHitRight, rayHitLeft;
+	// private void RaycastInAllDirections(Vector3 origin){
+
+	// 	rayHitUp = Physics2D.Raycast (origin, Vector3.up, rayLength, 1 << LayerMask.NameToLayer("Tile"));
+	// 	rayHitDown = Physics2D.Raycast (origin, Vector3.down, rayLength, 1 << LayerMask.NameToLayer("Tile"));
+	// 	rayHitRight = Physics2D.Raycast (origin, Vector3.left, rayLength, 1 << LayerMask.NameToLayer("Tile"));
+	// 	rayHitLeft = Physics2D.Raycast (origin, Vector3.right, rayLength, 1 << LayerMask.NameToLayer("Tile"));
+	// }
 
 	bool IsContained (TileBehaviour target)
 	{

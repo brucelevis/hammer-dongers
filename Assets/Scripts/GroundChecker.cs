@@ -27,11 +27,13 @@ public class GroundChecker : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D collider) {
-		++_count;
+	void OnTriggerEnter2D(Collider2D col) {
+		if(col.tag == "Tile")
+			++_count;
 	}
 
-	void OnTriggerExit2D(Collider2D collider) {
-		--_count;
+	void OnTriggerExit2D(Collider2D col) {
+		if(col.tag == "Tile")
+			--_count;
 	}
 }
