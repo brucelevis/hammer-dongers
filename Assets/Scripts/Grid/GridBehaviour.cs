@@ -9,11 +9,24 @@ public class GridBehaviour : MonoBehaviour {
 	public Vector2[] spawnPoints = { new Vector2(-7, 0.4f), new Vector2(7, 0.4f)};
 	List<List<TileBehaviour>> subsets;
 	STETilemap tilemap;
+	TileMatrix matrix;
+
+	void SetMatrix ()
+	{
+		var tiles = new List<TileBehaviour> ();
+		foreach (Transform child in transform){
+			var tile = child.GetComponent<TileBehaviour> ();
+			if(tile != null)
+				tiles.Add(tile);
+		}
+
+		matrix = new TileMatrix (tiles);
+	}
 	
 	void Start() {
 		subsets = new List<List<TileBehaviour>> ();
 		tilemap = GameObject.Find("Grid").GetComponent<STETilemap>();
-		var goo = GameObject.FindWithTag("Grid");
+		SetMatrix ();
 	}
 
 	public void Crack (TileBehaviour origin)
@@ -48,7 +61,6 @@ public class GridBehaviour : MonoBehaviour {
 					offset += 0.1f;
 				}
 			}
-		
 	}
 
 	List<TileBehaviour> GetSet (TileBehaviour origin, List<TileBehaviour> visited)
@@ -78,16 +90,6 @@ public class GridBehaviour : MonoBehaviour {
 		};
 	}
 
-	// private float rayLength = 1.2f;
-	// private RaycastHit2D rayHitUp, rayHitDown, rayHitRight, rayHitLeft;
-	// private void RaycastInAllDirections(Vector3 origin){
-
-	// 	rayHitUp = Physics2D.Raycast (origin, Vector3.up, rayLength, 1 << LayerMask.NameToLayer("Tile"));
-	// 	rayHitDown = Physics2D.Raycast (origin, Vector3.down, rayLength, 1 << LayerMask.NameToLayer("Tile"));
-	// 	rayHitRight = Physics2D.Raycast (origin, Vector3.left, rayLength, 1 << LayerMask.NameToLayer("Tile"));
-	// 	rayHitLeft = Physics2D.Raycast (origin, Vector3.right, rayLength, 1 << LayerMask.NameToLayer("Tile"));
-	// }
-
 	bool IsContained (TileBehaviour target)
 	{
 		foreach(List<TileBehaviour> tiles in subsets) 
@@ -104,15 +106,10 @@ public class GridBehaviour : MonoBehaviour {
 		return false;
 	}
 
+
+
 	private TileBehaviour GetTile(float x, float y) {
-		foreach (Transform child in transform){
-			// if (Mathf.Floor(child.position.x) == x && Mathf.Floor(child.position.y) == y)
-			if (child.tag == "Tile"
-				&&child.position.x >= x - 0.1f && child.position.x <= x + 0.1f
-				&& child.position.y >= y - 0.1f && child.position.y <= y + 0.1f)
-				return child.GetComponent<TileBehaviour>();
-		}
-		return null;
+		return matrix.GetTile (x, y);
 	}
 
 	void Clear ()
