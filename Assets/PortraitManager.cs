@@ -11,13 +11,22 @@ public class PortraitManager : MonoBehaviour {
 	Animator anim;
 	PlayerConfigurationContainer container;
 
+	GameObject leftRightIndicator;
+
 	// Use this for initialization
 	void Start () {
 		container = PlayerConfigurationContainer.getInstance ();
 		anim = GetComponent<Animator>();
+		leftRightIndicator = this.transform.Find("ChangeIndicator").gameObject;
 	}
 
 	void Update() {
+
+		if(anim.GetCurrentAnimatorStateInfo(0).IsName("Joined") && !leftRightIndicator.activeSelf)
+			leftRightIndicator.SetActive(true);
+		else if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Joined") && leftRightIndicator.activeSelf)
+			leftRightIndicator.SetActive(false);
+
 		if (actions == null)
 			return;
 		
