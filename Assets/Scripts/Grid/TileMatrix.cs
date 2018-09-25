@@ -30,8 +30,8 @@ public class TileMatrix {
 		yOffset = yMin;
 		xOffset = xMin;
 
-		for (int x = 0; x < columns; ++x)
-			for (int y = 0; y < rows; ++y) 
+		for (int x = 0; x <= columns; ++x)
+			for (int y = 0; y <= rows; ++y) 
 				foreach (var tile in tiles) {
 					if (tile.x - xOffset == x && tile.y   - yOffset == y)
 						matrix [x,y] = tile;
