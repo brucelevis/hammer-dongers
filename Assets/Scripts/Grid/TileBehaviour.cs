@@ -8,8 +8,10 @@ public class TileBehaviour : MonoBehaviour {
 	public float x, y;
 	public float timer = 3;
 	public int CollisionCounter = 0;
+	GridBehaviour grid;
 
 	void Start () {
+		grid = GetComponentInParent<GridBehaviour> ();
 		animator = GetComponent<Animator> ();	
 		animator.enabled = false;
 		x = transform.position.x;
@@ -42,10 +44,11 @@ public class TileBehaviour : MonoBehaviour {
 		if (CollisionCounter > 0) 
 			timer -= Time.deltaTime;
 		
-		// if (timer <= 0)
-		// 	Crack ();
+		if (timer <= 0) {
+			Crack ();
+			grid.Crack (this);
+		}
 	}
-
 
 	public override bool Equals (object other)
 	{
