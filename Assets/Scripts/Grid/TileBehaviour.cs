@@ -13,7 +13,6 @@ public class TileBehaviour : MonoBehaviour {
 	void Start () {
 		grid = GetComponentInParent<GridBehaviour> ();
 		animator = GetComponent<Animator> ();	
-		animator.enabled = false;
 		x = transform.position.x;
 		y = transform.position.y;
 	}
@@ -27,13 +26,21 @@ public class TileBehaviour : MonoBehaviour {
 	{
 		if (cracked)
 			return;
-		
-		animator.enabled = true;
 		cracked = true;
+		animator.SetBool ("Cracked", true);
 	}
 
 	public void Update () {
+		if (cracked)
+			return;
 		ConsumeTimer ();
+	}
+
+	void UpdateTileState ()
+	{
+		int state = (int)Mathf.Ceil (timer);
+		if (animator.GetInteger ("Timer") != state)
+			animator.SetInteger ("Timer", state);
 	}
 
 	void ConsumeTimer ()
@@ -44,10 +51,13 @@ public class TileBehaviour : MonoBehaviour {
 		if (CollisionCounter > 0) 
 			timer -= Time.deltaTime;
 		
-		// if (timer <= 0) {
-		// 	Crack ();
-		// 	grid.Crack (this);
-		// }
+
+		if (timer <= 0) {
+			Crack ();
+			grid.Crack (this);
+		}
+
+		UpdateTileState ();
 	}
 
 	public override bool Equals (object other)
