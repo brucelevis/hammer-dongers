@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBehaviour : MonoBehaviour {
 
@@ -17,6 +18,8 @@ public class PlayerBehaviour : MonoBehaviour {
 	public float dashCooldown = 1.2f;
 	bool dashEnabled = true;
 
+	public Image dashBar;
+	
 	void Start () 
 	{
 		rb = GetComponent<Rigidbody2D> ();
@@ -86,16 +89,22 @@ public class PlayerBehaviour : MonoBehaviour {
 	public void StopDash (){
 		animator.SetBool ("Dashing", false);
 		Invoke ("EnableDash", dashCooldown);
+
+		//lerp here
+		StartCoroutine(FillDashBar(dashCooldown));
 	}
 
 	public void EnableDash(){
 		spriteEffector.FlashGreenOnce();
+		dashBar.fillAmount = 0;
 		dashEnabled = true;
 	}
 
 	void Flip (Vector2 velocity) 
 	{
-		transform.localScale = new Vector3 (velocity.x > 0 ? -1 : 1, transform.localScale.y, transform.localScale.z);
+		var fipDir = velocity.x > 0 ? -1 : 1;
+		transform.localScale = new Vector3 (fipDir, transform.localScale.y, transform.localScale.z);
+		dashBar.transform.parent.localScale = new Vector3 (fipDir, dashBar.transform.parent.localScale.y, dashBar.transform.parent.localScale.z);
 	}
 
 	void SetMovementAnimation (Vector2 velocity)
@@ -158,4 +167,19 @@ public class PlayerBehaviour : MonoBehaviour {
 		SetMovementAnimation (velocity);
 		FlipToMatchVelocity (velocity);
 	}
+
+	IEnumerator FillDashBar(float seconds)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < seconds)
+        {
+			if(animator.GetCurrentAnimatorStateInfo(0).IsName("fall")){
+				dashBar.fillAmount = 0;
+				break;
+			}
+			dashBar.fillAmount = Mathf.Lerp(0, 1, (elapsedTime / seconds));
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
 }
