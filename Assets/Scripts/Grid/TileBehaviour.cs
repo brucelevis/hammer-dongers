@@ -44,10 +44,10 @@ public class TileBehaviour : MonoBehaviour {
 		if (CollisionCounter > 0) 
 			timer -= Time.deltaTime;
 		
-		if (timer <= 0) {
-			Crack ();
-			grid.Crack (this);
-		}
+		// if (timer <= 0) {
+		// 	Crack ();
+		// 	grid.Crack (this);
+		// }
 	}
 
 	public override bool Equals (object other)
