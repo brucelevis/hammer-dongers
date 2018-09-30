@@ -31,6 +31,8 @@ public class TileBehaviour : MonoBehaviour {
 	}
 
 	public void Update () {
+		if (cracked)
+			return;
 		ConsumeTimer ();
 	}
 
