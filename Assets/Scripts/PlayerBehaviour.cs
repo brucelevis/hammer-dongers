@@ -24,7 +24,6 @@ public class PlayerBehaviour : MonoBehaviour {
 	{
 		rb = GetComponent<Rigidbody2D> ();
 		animator = GetComponent<Animator> ();
-		Debug.Log(animator);
 		spriteEffector = GetComponent<SpriteEffector> ();
 	}
 
