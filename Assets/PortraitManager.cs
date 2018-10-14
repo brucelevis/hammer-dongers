@@ -64,7 +64,7 @@ public class PortraitManager : MonoBehaviour {
 
 		var config = container.GetConfig (CharacterIndex);
 		container.Remove (CharacterIndex);
-		config.PlayerIndex = index;
+		config.PlayerColorIndex = index;
 		container.Configurations.Add (config);
 		CharacterIndex = index;
 		var parentPortraits = GetComponentInParent<PlayerJoin> ().portraitImages;

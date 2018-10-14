@@ -13,11 +13,17 @@ public class MatchManager : MonoBehaviour {
 	public GameObject[] grids;
 	public GameObject[] players;
 	public GameObject victoryMessage;
+	public static int maxScore = 3;
 	bool gameover = false;
+	float matchTransitionTime = 0.75f;
+	ScoreCanvasBehaviour scoreCanvas;
+
+	//PlayerIndex => PlayerScore
 	public static Dictionary<int, int> scores = new Dictionary<int, int>();
 
-	// Use this for initialization
 	void Start () {
+
+		scoreCanvas = GameObject.Find ("ScoreCanvas").GetComponent<ScoreCanvasBehaviour> ();
 
 		if(soundtrackAudioId == -1)
 			soundtrackAudioId = SoundManager.PlayMusic(soundtrack, 0.1f, true, true, 1, 1);
@@ -26,18 +32,15 @@ public class MatchManager : MonoBehaviour {
 
 
 		foreach(GameObject player in players){
-			var index = player.GetComponent<PlayerInput> ().PlayerPrefix;
+			var index = player.GetComponent<PlayerInput> ().PlayerSuffix;
 			if(!scores.ContainsKey(index)){
 				scores [index] = 0;
 			}
-
-			UpdateScoreInUI(index, ""+scores [index]);
 		}
 	}
 
-	void UpdateScoreInUI(int playerIndex, string newText){
-		//var scoreUI = GameObject.Find("Score"+playerIndex);
-		//scoreUI.GetComponent<Text>().text = newText;
+	void UpdateScoreInUI(int playerSuffix){
+		scoreCanvas.ShowNextTrophy (playerSuffix);
 	}
 
 	void Reset ()
@@ -51,12 +54,12 @@ public class MatchManager : MonoBehaviour {
 		Reset ();
 	}
 
-	void SetVictoryMessage (int playerPrefix)
+	void SetVictoryMessage (int playerSuffix)
 	{
 		victoryMessage.SetActive (true);
 		Animator animator = victoryMessage.GetComponent<Animator> ();
 		animator.Rebind ();
-		animator.SetInteger ("Player", playerPrefix);
+		animator.SetInteger ("Player", playerSuffix);
 		gameover = true;
 		Invoke ("Restart", 5);
 	}
@@ -69,18 +72,21 @@ public class MatchManager : MonoBehaviour {
 		List<GameObject> standingPlayers = players.Where( x => x.activeSelf).ToList();
 
 		if (standingPlayers.Count == 0) 
-			Reset ();
+			Invoke ("Reset", matchTransitionTime);
 		else if (standingPlayers.Count == 1){
-			int playerPrefix = standingPlayers[0].GetComponent<PlayerInput>().PlayerPrefix;
-			scores [playerPrefix]++;
-			UpdateScoreInUI(playerPrefix, ""+scores [playerPrefix]);
+			int playerSuffix = standingPlayers[0].GetComponent<PlayerInput>().PlayerSuffix;
+			scores [playerSuffix]++;
+			UpdateScoreInUI(playerSuffix);
 
-			if (scores [playerPrefix] == 3) {
-				SetVictoryMessage (playerPrefix);
+			if (scores [playerSuffix] == maxScore) {
+				SetVictoryMessage (playerSuffix);
 				return;
 			}
-			if(!gameover)
-				Reset ();
+
+			if (!gameover) {
+				Invoke ("Reset", matchTransitionTime);
+				gameover = true;
+			}
 		}
 	}
 }

@@ -17,7 +17,7 @@ public class PlayerConfigurationContainer {
 
 	public PlayerInputConfiguration GetConfig(int index) {
 		foreach (var config in Configurations) 
-			if (config.PlayerIndex == index)
+			if (config.PlayerColorIndex == index)
 				return config;
 		return null;
 	}

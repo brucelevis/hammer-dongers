@@ -31,8 +31,6 @@ public class ScoreBehaviour : MonoBehaviour {
 			return gameObject;
 		}
 		).ToList();
-
-		Debug.Log ("");
 	}
 
 	// Use this for initialization

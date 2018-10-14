@@ -36,19 +36,19 @@ public class PlayerFactory : MonoBehaviour {
 	{
 		if (players.Count < maxPlayers)
 		{
-			var playerPosition = playerPositions[configuration.PlayerIndex];
-			var gameObject = (GameObject) Instantiate( playerPrefabs[configuration.PlayerIndex], playerPosition, Quaternion.identity );
+			var playerPosition = playerPositions[configuration.PlayerColorIndex];
+			var gameObject = (GameObject) Instantiate( playerPrefabs[configuration.PlayerColorIndex], playerPosition, Quaternion.identity );
 
 			var swap = gameObject.GetComponent<SwapTexture> ();
-			swap.swapColors = CharacterColors.GetPalette (configuration.PlayerIndex);
+			swap.swapColors = CharacterColors.GetPalette (configuration.PlayerColorIndex);
 
 			var player = gameObject.GetComponent<PlayerInput>();
 
 			player.Actions = configuration.Actions;
 
 			players.Add( player );
-			gameObject.name = "Player" + players.Count;
-			player.PlayerPrefix = players.Count;
+			gameObject.name = "Player" + configuration.PlayerSuffix;
+			player.PlayerSuffix = configuration.PlayerSuffix;
 			return player;
 		}
 		return null;

@@ -10,7 +10,7 @@ public class PlayerInput : MonoBehaviour {
 	float lastDirectionX = 0;
 	float lastDirectionY = -1;
 
-	public int PlayerPrefix   = 1;
+	public int PlayerSuffix   = 1;
 	PlayerBehaviour player;
 	public PlayerActions Actions { get; set; }
 

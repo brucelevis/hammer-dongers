@@ -118,7 +118,7 @@ public class CharacterSelectInputBehaviour : MonoBehaviour
 		if (players.Count < container.MAX_PLAYERS)
 		{
 			int index = container.GetAvailablePlayerIndex ();
-			PlayerInputConfiguration player = new PlayerInputConfiguration (index, actions);
+			PlayerInputConfiguration player = new PlayerInputConfiguration (index, actions, players.Count + 1);
 			players.Add( player );
 
 			playerJoin.Join (index, characterSelectActions);
