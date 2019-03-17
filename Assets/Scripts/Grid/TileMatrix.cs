@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class TileMatrix {
 
-	TileBehaviour [,] matrix;
-	float yOffset;
-	float xOffset;
-	int rows;
-	int columns;
+	public TileBehaviour [,] matrix;
+	public float yOffset;
+	public float xOffset;
+	public int rows;
+	public int columns;
 
 	public TileMatrix(List<TileBehaviour> tiles) {
 		tiles.Sort (CompareTileCoordinates);

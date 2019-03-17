@@ -7,9 +7,10 @@ using CreativeSpore.SuperTilemapEditor;
 public class GridBehaviour : MonoBehaviour {
 
 	public Vector2[] spawnPoints = { new Vector2(-7, 0.4f), new Vector2(7, 0.4f)};
+	public TileMatrix matrix;
+	public bool IsTileTimerDisabled;
 	List<List<TileBehaviour>> subsets;
 	STETilemap tilemap;
-	TileMatrix matrix;
 
 	void SetMatrix ()
 	{

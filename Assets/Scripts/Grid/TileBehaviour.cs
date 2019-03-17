@@ -10,7 +10,7 @@ public class TileBehaviour : MonoBehaviour {
 	public int CollisionCounter = 0;
 	GridBehaviour grid;
 
-	void Start () {
+	void Awake () {
 		grid = GetComponentInParent<GridBehaviour> ();
 		animator = GetComponent<Animator> ();	
 		x = transform.position.x;
@@ -45,8 +45,8 @@ public class TileBehaviour : MonoBehaviour {
 
 	void ConsumeTimer ()
 	{
-		if (Time.timeSinceLevelLoad < 2)
-			return; 
+		if (Time.timeSinceLevelLoad < 2 || grid.IsTileTimerDisabled)
+			return;
 		
 		if (CollisionCounter > 0) 
 			timer -= Time.deltaTime;
@@ -88,5 +88,10 @@ public class TileBehaviour : MonoBehaviour {
 	public override int GetHashCode ()
 	{
 		return base.GetHashCode ();
+	}
+
+	public override string ToString ()
+	{
+		return "{ x: " + this.x + ", y: " + this.y + ", cracked: " + this.cracked + " }";
 	}
 }
