@@ -122,9 +122,17 @@ namespace CreativeSpore.SuperTilemapEditor
                 EditorGUIUtility.labelWidth = 80;
                 prefabData.offset = EditorGUILayout.Vector3Field("Offset", prefabData.offset);
                 prefabData.offsetMode = (TilePrefabData.eOffsetMode)EditorGUILayout.EnumPopup("Offset Mode", prefabData.offsetMode);
+                prefabData.rotation = EditorGUILayout.Vector3Field("Rotation", prefabData.rotation);
                 EditorGUI.BeginChangeCheck();
+                GameObject prevPrefab = prefabData.prefab;
                 prefabData.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", prefabData.prefab, typeof(GameObject), false);
                 bool isPrefabChanged = EditorGUI.EndChangeCheck();
+                // Special case for 3D tiles where tilemap will be rotated over the plane XZ
+                if(isPrefabChanged && !prevPrefab && prefabData.rotation == Vector3.zero && prefabData.prefab && prefabData.prefab.GetComponentInChildren<MeshRenderer>())
+                {
+                    prefabData.rotation = new Vector3(-90, 0, 0);
+                    prefabData.showPrefabPreviewInTilePalette = true;                    
+                }
 
                 GUILayout.BeginHorizontal();
                 Texture2D prefabPreview = AssetPreview.GetAssetPreview(selectedTile.prefabData.prefab);                

@@ -133,6 +133,7 @@ namespace CreativeSpore.SuperTilemapEditor
 
         public GameObject prefab;
         public Vector3 offset;
+        public Vector3 rotation;
         public eOffsetMode offsetMode;
         /// <summary>
         /// If the tile should be hidden or not if the prefab is attached

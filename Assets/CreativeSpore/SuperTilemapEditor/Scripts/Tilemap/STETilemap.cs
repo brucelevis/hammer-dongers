@@ -55,7 +55,11 @@ namespace CreativeSpore.SuperTilemapEditor
 
     [AddComponentMenu("SuperTilemapEditor/STETilemap", 10)]
     [DisallowMultipleComponent]
+#if UNITY_2018_3_OR_NEWER
+    [ExecuteAlways]
+#else
     [ExecuteInEditMode] //NOTE: this is needed so OnDestroy is called and there is no memory leaks
+#endif
     public class STETilemap : MonoBehaviour
     {
         /// <summary>
@@ -74,14 +78,14 @@ namespace CreativeSpore.SuperTilemapEditor
         /// </summary>
         public static bool DisableTilePrefabCreation = false;
 
-        #region Public Events
+#region Public Events
         public delegate void OnMeshUpdatedDelegate(STETilemap source);
         public OnMeshUpdatedDelegate OnMeshUpdated;
         public delegate void OnTileChangedDelegate(STETilemap tilemap, int gridX, int gridY, uint tileData);
         public OnTileChangedDelegate OnTileChanged;
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
         public Tileset Tileset
         {
             get { return m_tileset; }
@@ -454,15 +458,16 @@ namespace CreativeSpore.SuperTilemapEditor
             if (!m_preRenderPosSet)
             {
                 m_preRenderPosSet = true;
-                m_preRenderPos = transform.position;
+                m_preRenderPos = transform.localPosition;
             }
             //if(!cam.name.Equals("SceneCamera")) TODO: add an option to disable parallax in SceveView
-            transform.position = m_preRenderPos + (Vector3)(Vector2.Scale(cam.transform.position, (Vector2.one - m_parallaxFactor)));
+            //NOTE: tilemap.transform.position shouldn't be modified. When the parent has a rotation, it leads to float precision, changing slowly the position.
+            transform.localPosition = m_preRenderPos + (Vector3)(Vector2.Scale(cam.transform.position, (Vector2.one - m_parallaxFactor)));
         }
 
         private void _OnPostRender(Camera cam)
         {
-            transform.position = m_preRenderPos;
+            transform.localPosition = m_preRenderPos;
             m_preRenderPosSet = false;
         }
 
@@ -548,8 +553,8 @@ namespace CreativeSpore.SuperTilemapEditor
 
         void DoDrawGizmos()
         {
-            Vector3 savedPos = transform.position;
-            transform.position += (Vector3)(Vector2.Scale(Camera.current.transform.position, (Vector2.one - m_parallaxFactor))); //apply parallax
+            Vector3 savedPos = transform.localPosition;
+            transform.localPosition += (Vector3)(Vector2.Scale(Camera.current.transform.position, (Vector2.one - m_parallaxFactor))); //apply parallax
             Rect rBound = new Rect(MapBounds.min, MapBounds.size);
             HandlesEx.DrawRectWithOutline(transform, rBound, new Color(0, 0, 0, 0), new Color(1, 1, 1, 0.5f));
 
@@ -601,7 +606,7 @@ namespace CreativeSpore.SuperTilemapEditor
                 }
             }
             //
-            transform.position = savedPos; // restore position
+            transform.localPosition = savedPos; // restore position
         }
 #endif
 #endregion
@@ -634,7 +639,7 @@ namespace CreativeSpore.SuperTilemapEditor
         /// <summary>
         /// Call this methods after changing any render property to update all created tilechunks.
         /// </summary>
-        public void UpdateChunkRenderereProperties()
+        public void UpdateChunkRendererProperties()
         {
             var valueIter = m_dicChunkCache.Values.GetEnumerator();
             while (valueIter.MoveNext())

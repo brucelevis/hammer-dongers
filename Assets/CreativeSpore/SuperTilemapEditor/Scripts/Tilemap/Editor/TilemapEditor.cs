@@ -345,8 +345,9 @@ namespace CreativeSpore.SuperTilemapEditor
                 return;
             }
 
-            Vector3 savedPos = m_tilemap.transform.position;
-            m_tilemap.transform.position += (Vector3)(Vector2.Scale(Camera.current.transform.position, (Vector2.one - m_tilemap.ParallaxFactor))); //apply parallax
+            //NOTE: tilemap.transform.position shouldn't be modified. When the parent has a rotation, it leads to float precision, changing slowly the position.
+            Vector3 savedPos = m_tilemap.transform.localPosition;
+            m_tilemap.transform.localPosition += (Vector3)(Vector2.Scale(Camera.current.transform.position, (Vector2.one - m_tilemap.ParallaxFactor))); //apply parallax
             m_brushVisible = s_editMode == eEditMode.Paint;
             if (s_editMode == eEditMode.Paint)
             {
@@ -377,7 +378,7 @@ namespace CreativeSpore.SuperTilemapEditor
                 DoColliderSceneGUI();
             }
             BrushBehaviour.SetVisible(m_brushVisible);
-            m_tilemap.transform.position = savedPos; // restore position
+            m_tilemap.transform.localPosition = savedPos; // restore position
         }
 
         #endregion
@@ -620,6 +621,7 @@ namespace CreativeSpore.SuperTilemapEditor
                 if (EditorGUI.EndChangeCheck())
                 {
                     m_tilemap.PixelSnap = isPixelSnapOn;
+                    serializedObject.ApplyModifiedProperties();
                 }
             }
 
@@ -673,7 +675,7 @@ namespace CreativeSpore.SuperTilemapEditor
                 if (EditorGUI.EndChangeCheck())
                 {
                     serializedObject.ApplyModifiedProperties();
-                    m_tilemap.UpdateChunkRenderereProperties();
+                    m_tilemap.UpdateChunkRendererProperties();
                 }
 
             }
@@ -827,7 +829,7 @@ namespace CreativeSpore.SuperTilemapEditor
 
                             if (
                                 (EditorWindow.focusedWindow == EditorWindow.mouseOverWindow) && // fix painting tiles when closing another window popup over the SceneView like GameObject Selection window
-                                (e.type == EventType.MouseDown || e.type == EventType.MouseDrag && isMouseGridChanged || e.type == EventType.MouseUp || isModifiersChanged)
+                                (e.type == EventType.MouseDown || e.type == EventType.MouseDrag && isMouseGridChanged || e.type == EventType.MouseUp || isModifiersChanged & GetBrushMode() == eBrushMode.Paint)
                             )
                             {
                                 if (e.button == 0)

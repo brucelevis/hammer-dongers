@@ -6,12 +6,7 @@ using System.Linq;
 namespace CreativeSpore.SuperTilemapEditor
 {
     partial class TilemapChunk
-    {
-        [SerializeField, HideInInspector]
-        private MeshFilter m_meshFilter;
-        [SerializeField, HideInInspector]
-        private MeshRenderer m_meshRenderer;
-
+    {        
         /// <summary>
         /// Next time UpdateMesh is called, the tile mesh will be rebuild
         /// </summary>
@@ -133,7 +128,7 @@ namespace CreativeSpore.SuperTilemapEditor
             }
 #if UNITY_EDITOR
             // fix prefab preview, not compatible with MaterialPropertyBlock. I need to create a new material and change the main texture and color directly.
-            if (UnityEditor.PrefabUtility.GetPrefabType(gameObject) == UnityEditor.PrefabType.Prefab)
+            if ( EditorCompatibilityUtils.IsPrefab(gameObject))
             {
                 gameObject.hideFlags |= HideFlags.HideInHierarchy;
                 if (m_meshRenderer.sharedMaterial == null || m_meshRenderer.sharedMaterial == ParentTilemap.Material)

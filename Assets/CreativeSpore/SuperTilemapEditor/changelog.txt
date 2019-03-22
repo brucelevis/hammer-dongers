@@ -1,3 +1,24 @@
+--- v1.6.1 ---
+- ADDED collision message detection to STETilemap
+- FIXED some warning messages : SendMessage cannot be called during Awake, CheckConsistency, or OnValidate
+- FIXED Unity2018.3 warnings and compatibility issues
+- FIXED using Flood Fill and Erase tool when pressing Control key
+- FIXED performance issue in the Editor when updating a tilemap colliders
+
+
+--- v1.6.0 ---
+- ADDED rotation to the tile properties for the prefab data
+- FIXED some cases where Pixel Snap value is not saved
+- FIXED random serialization errors when making a build
+- FIXED exception when changing Group Autotiling Mask in Unity 2018.3.0b2
+- FIXED MapPathFinding to consider empty grid positions with no tiles as non passable
+- FIXED typo with method UpdateChunkRendererProperties
+- FIXED gc allocation in TilemapChunk.OnWillRenderObject
+- FIXED bug in PathfindingBehaviour when using Synchronous compute mode
+- FIXED bug making the tilemap transform position to change when the tilemap was a child of a parent gameObject with a rotation.
+- FIXED remove tiles when using a drawing tool different than pencil if the selection is empty
+- FIXED  rotation and flip flags when using 3D prefab tiles in an XZ tilemap
+
 --- v1.5.0 ---
 - ADDED ClearTiles button near ClearMap, to clear the tiles but keep the map bounds.
 - ADDED Merger Tile Parameters option in Tile Properties Window when multiple tiles are selected.

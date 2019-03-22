@@ -84,11 +84,13 @@ namespace CreativeSpore.SuperTilemapEditor
             {
                 if (m_pathNodes != null && m_pathNodes.First != null)
                 {
+                    Color color = Color.red;
                     LinkedListNode<IPathNode> node = m_pathNodes.First;
                     while (node.Next != null)
                     {
-                        Debug.DrawLine((node.Value as MapTileNode).Position, (node.Next.Value as MapTileNode).Position);
+                        Debug.DrawLine((node.Value as MapTileNode).Position, (node.Next.Value as MapTileNode).Position, color);
                         node = node.Next;
+                        color = node.Next != null && node.Next.Next != null ? Color.white : Color.green;
                     }
                 }
             }
@@ -97,7 +99,7 @@ namespace CreativeSpore.SuperTilemapEditor
         void UpdatePathSync(Vector2 startPos, Vector2 endPos)
         {
             // start and endPos are swapped because the result linkedlist is reversed
-            m_pathNodes = PathFinding.GetRouteFromTo(endPos, startPos);
+            m_pathNodes = PathFinding.GetRouteFromTo(startPos, endPos);
             ProcessComputedPath();
         }
 

@@ -10,17 +10,71 @@ namespace CreativeSpore.SuperTilemapEditor
 {
     partial class TilemapChunk
     {
-        //+++ MeshCollider
-        [SerializeField, HideInInspector]
-        private MeshCollider m_meshCollider;
-        private static List<Vector3> s_meshCollVertices;
-        private static List<int> s_meshCollTriangles;
-        //---
 
-        //+++ 2D Edge colliders
-        [SerializeField]
-        private bool m_has2DColliders;
-        //---
+        // Dispatch collision messages to the tilemap parent object
+        #region Unity Collision Messages
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            ParentTilemap.SendMessage("OnCollisionEnter", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            ParentTilemap.SendMessage("OnCollisionEnter2D", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            ParentTilemap.SendMessage("OnCollisionExit", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            ParentTilemap.SendMessage("OnCollisionExit2D", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            ParentTilemap.SendMessage("OnCollisionStay", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            ParentTilemap.SendMessage("OnCollisionStay2D", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            ParentTilemap.SendMessage("OnTriggerEnter", other, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            ParentTilemap.SendMessage("OnTriggerEnter2D", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            ParentTilemap.SendMessage("OnTriggerExit", other, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            ParentTilemap.SendMessage("OnTriggerExit2D", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            ParentTilemap.SendMessage("OnTriggerStay", other, SendMessageOptions.DontRequireReceiver);
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            ParentTilemap.SendMessage("OnTriggerStay2D", collision, SendMessageOptions.DontRequireReceiver);
+        }
+
+        #endregion
 
         /// <summary>
         /// Next time UpdateColliderMesh is called, the collider mesh will be rebuild
@@ -250,7 +304,8 @@ namespace CreativeSpore.SuperTilemapEditor
 
                                         int neighborTileId = (int)(neighborTileData & Tileset.k_TileDataMask_TileId);
 #if UNITY_EDITOR
-                                        Debug.Assert(neighborTileId == Tileset.k_TileId_Empty || neighborTileId < Tileset.Tiles.Count, "Wrong neighbor tileId " + neighborTileId + " not found in the tileset!");
+                                        if(neighborTileId != Tileset.k_TileId_Empty && neighborTileId >= Tileset.Tiles.Count)
+                                            Debug.LogWarning("Wrong neighbor tileId " + neighborTileId + " not found in the tileset!");
 #endif
                                         if (neighborTileId != Tileset.k_TileId_Empty && neighborTileId < Tileset.Tiles.Count)
                                         {

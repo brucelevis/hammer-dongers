@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,7 +6,11 @@ namespace CreativeSpore.SuperTilemapEditor
 {
     [AddComponentMenu("SuperTilemapEditor/TilemapGroup", 10)]
     [DisallowMultipleComponent]
+#if UNITY_2018_3_OR_NEWER
+    [ExecuteAlways]
+#else
     [ExecuteInEditMode] // allow OnTransformChildrenChanged to be called
+#endif
     public class TilemapGroup : MonoBehaviour, ISerializationCallbackReceiver
     {
         public STETilemap SelectedTilemap {

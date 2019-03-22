@@ -65,16 +65,18 @@ namespace CreativeSpore.SuperTilemapEditor
             if ( m_owner.IsComputing && m_owner.AllowBlockedDestination && m_owner.EndNode == this)
                 return true;
             bool isBlocked = false;
+            bool isEmptyCell = true; // true is not tile is found in the node position
             for (int i = 0; !isBlocked && i < m_tilemapGroup.Tilemaps.Count; ++i)
             {
                 STETilemap tilemap = m_tilemapGroup[i];
                 if (tilemap && tilemap.ColliderType != eColliderType.None && tilemap.IsGridPositionInsideTilemap(GridX, GridY))
                 {
                     Tile tile = tilemap.GetTile(tilemap.transform.InverseTransformPoint(Position)); // Use Position instead to allow tilemaps with offset different than 0, tilemap.GetTile(GridX, GridY);
+                    isEmptyCell = false;
                     isBlocked = tile != null && tile.collData.type != eTileCollider.None;                    
                 }
             }
-            return !isBlocked;
+            return !isBlocked && !isEmptyCell;
         }
 
         public override float GetHeuristic( ) 

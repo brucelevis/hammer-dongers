@@ -1,10 +1,10 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-#if UNITY_EDITOR
 using UnityEditor;
-
 namespace CreativeSpore.SuperTilemapEditor
 {
     public class EditorCompatibilityUtils
@@ -56,6 +56,31 @@ namespace CreativeSpore.SuperTilemapEditor
         public static System.Enum EnumMaskField(GUIContent label, System.Enum enumValue)
         {
             return EditorGUILayout.EnumMaskField(label, enumValue);
+        }
+#endif
+
+#if UNITY_2018_3_OR_NEWER
+        public static GameObject CreatePrefab(string path, GameObject brushTilemap)
+        {
+            bool success;
+            GameObject obj = PrefabUtility.SaveAsPrefabAsset(brushTilemap, path, out success);
+            Debug.Assert(success, "Couldn't create the prefab asset!");
+            return obj;
+        }
+
+        public static bool IsPrefab(GameObject obj)
+        {
+            return UnityEditor.PrefabUtility.GetPrefabAssetType(obj) != PrefabAssetType.NotAPrefab;
+        }
+#else
+        public static GameObject CreatePrefab(string path, GameObject brushTilemap)
+        {
+            return PrefabUtility.CreatePrefab(path, brushTilemap);
+        }
+
+        public static bool IsPrefab(GameObject obj)
+        {
+            return UnityEditor.PrefabUtility.GetPrefabType(obj) == UnityEditor.PrefabType.Prefab;
         }
 #endif
     }

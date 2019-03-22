@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -9,11 +10,16 @@ namespace CreativeSpore.SuperTilemapEditor
 {
 
     [RequireComponent(typeof(STETilemap))]
+#if UNITY_2018_3_OR_NEWER
+    [ExecuteAlways]
+#else
     [ExecuteInEditMode]
+#endif
     public class BrushBehaviour : MonoBehaviour
     {
-        #region Singleton
+#region Singleton
         static BrushBehaviour s_instance;
+        public static bool Exists { get { return s_instance; } }
         public static BrushBehaviour Instance
         {
             get
@@ -44,49 +50,7 @@ namespace CreativeSpore.SuperTilemapEditor
                 return s_instance;
             }
         }
-        #endregion
-
-        #region Menu Items
-#if UNITY_EDITOR
-        [MenuItem("SuperTilemapEditor/Brush/Create Tilemap From Selection %t")]
-        private static GameObject CreateTilemapFromBrush()
-        {
-            if(s_instance)
-            {
-                GameObject brushTilemap = new GameObject( GameObjectUtility.GetUniqueNameForSibling(null, "TilemapSelection"));
-                brushTilemap.transform.position = s_instance.transform.position;
-                brushTilemap.transform.rotation = s_instance.transform.rotation;
-                brushTilemap.transform.localScale = s_instance.transform.localScale;
-                STETilemap tilemapBhv = brushTilemap.AddComponent<STETilemap>();
-                tilemapBhv.Tileset = s_instance.BrushTilemap.Tileset;
-                tilemapBhv.Material = s_instance.BrushTilemap.Material;
-                s_instance.Paint(tilemapBhv, Vector2.zero);
-                return brushTilemap;
-            }
-            return null;
-        }
-
-        [MenuItem("SuperTilemapEditor/Brush/Create Prefab From Selection %#t")]
-        private static void CreatePrefabFromBrush()
-        {
-            if (s_instance)
-            {
-                GameObject brushTilemap = CreateTilemapFromBrush();
-                string path = AssetDatabase.GetAssetOrScenePath(Selection.activeObject);
-                if(string.IsNullOrEmpty(path))
-                {
-                    path = "Assets/";
-                }
-                path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), brushTilemap.name + ".prefab").Replace(@"\", @"/");
-                path = AssetDatabase.GenerateUniqueAssetPath(path);       
-                GameObject prefab = PrefabUtility.CreatePrefab(path, brushTilemap);
-                Selection.activeObject = prefab;
-                EditorGUIUtility.PingObject(prefab);
-                GameObject.DestroyImmediate(brushTilemap);
-            }
-        }
-#endif
-        #endregion
+#endregion
 
         public enum eBrushPaintMode
         {
@@ -109,7 +73,7 @@ namespace CreativeSpore.SuperTilemapEditor
 
         private eBrushPaintMode m_paintMode = eBrushPaintMode.Pencil;
 
-        #region MonoBehaviour Methods
+#region MonoBehaviour Methods
         void Start()
         {
             if(s_instance != this)
@@ -125,7 +89,7 @@ namespace CreativeSpore.SuperTilemapEditor
                 m_brushTilemap.ClearMap();
             }
         }
-        #endregion
+#endregion
 
         public static BrushBehaviour GetOrCreateBrush(STETilemap tilemap)
         {
@@ -215,7 +179,7 @@ namespace CreativeSpore.SuperTilemapEditor
         public static void SRot90(){ if(s_instance) s_instance.Rot90(); }
         public static void SRot90Back() { if (s_instance) s_instance.Rot90Back(); }
 
-        #region Drawing Methods
+#region Drawing Methods
 
         public void FlipH(bool changeFlags = true)
         {
@@ -328,20 +292,24 @@ namespace CreativeSpore.SuperTilemapEditor
         public void DoPaintPressed(STETilemap tilemap, Vector2 localPos, EventModifiers modifiers = default(EventModifiers))
         {
             //Debug.Log("DoPaintPressed (" + TilemapUtils.GetGridX(tilemap, localPos) + "," + TilemapUtils.GetGridY(tilemap, localPos) + ")");            
-            if(m_paintMode == eBrushPaintMode.Pencil) Paint(tilemap, localPos);
+            if (m_paintMode == eBrushPaintMode.Pencil) Paint(tilemap, localPos);
             else
             {
                 m_pressedPosition = localPos;
                 m_isDragging = true;
                 Offset = Vector2.zero;
                 m_brushPattern = GetBrushPattern();
+                bool isSingleEmptyTile = BrushTilemap.GridWidth == 1 && BrushTilemap.GridHeight == 1 && BrushTilemap.GetTileData(0, 0) == Tileset.k_TileData_Empty;
+                if (isSingleEmptyTile)
+                    Paint(tilemap, localPos);
             }
         }
 
         public void DoPaintDragged(STETilemap tilemap, Vector2 localPos, EventModifiers modifiers = default(EventModifiers))
         {
             //Debug.Log("DoPaintDragged (" + TilemapUtils.GetGridX(tilemap, localPos) + "," + TilemapUtils.GetGridY(tilemap, localPos) + ")");
-            if(m_paintMode == eBrushPaintMode.Pencil) Paint(tilemap, localPos);
+            bool isSingleEmptyTile = BrushTilemap.GridWidth == 1 && BrushTilemap.GridHeight == 1 && BrushTilemap.GetTileData(0, 0) == Tileset.k_TileData_Empty;
+            if (m_paintMode == eBrushPaintMode.Pencil || isSingleEmptyTile) Paint(tilemap, localPos);
             else
             {
                 if (m_isDragging)
@@ -488,6 +456,6 @@ namespace CreativeSpore.SuperTilemapEditor
             tilemap.IsUndoEnabled = false;
         }
 
-        #endregion        
+#endregion
     }
 }

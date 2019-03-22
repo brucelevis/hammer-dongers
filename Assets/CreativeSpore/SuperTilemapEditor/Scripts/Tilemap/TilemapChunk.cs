@@ -11,10 +11,14 @@ namespace CreativeSpore.SuperTilemapEditor
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(MeshFilter))]
     [AddComponentMenu("")] // Disable attaching it to a gameobject
+#if UNITY_2018_3_OR_NEWER
+    [ExecuteAlways]
+#else
     [ExecuteInEditMode] //NOTE: this is needed so OnDestroy is called and there is no memory leaks
+#endif
     public partial class TilemapChunk : MonoBehaviour
     {
-        #region Public Properties
+#region Public Properties
         public Tileset Tileset
         {
             get { return ParentTilemap.Tileset; }
@@ -59,9 +63,9 @@ namespace CreativeSpore.SuperTilemapEditor
         /// Most of the time a value of 0.5 pixels will be fine, but in case of a big zoom-out level, a higher value will be necessary
         /// </summary>
         public float InnerPadding { get { return ParentTilemap.InnerPadding; } }
-        #endregion
+#endregion
 
-        #region Private Fields
+#region Private Fields
 
         [SerializeField, HideInInspector]
         private int m_width = -1;
@@ -71,6 +75,29 @@ namespace CreativeSpore.SuperTilemapEditor
         private List<uint> m_tileDataList = new List<uint>();        
         [SerializeField, HideInInspector]
         private List<TileColor32> m_tileColorList = null;
+
+        //+++ MeshCollider
+        [SerializeField, HideInInspector]
+        private MeshCollider m_meshCollider;
+        private static List<Vector3> s_meshCollVertices;
+        private static List<int> s_meshCollTriangles;
+        //---
+
+        //+++ 2D Edge colliders
+        [SerializeField]
+        private bool m_has2DColliders;
+        //---
+
+        //+++ Renderer
+        [SerializeField, HideInInspector]
+        private MeshFilter m_meshFilter;
+        [SerializeField, HideInInspector]
+        private MeshRenderer m_meshRenderer;
+        //---
+
+        [SerializeField, HideInInspector]
+        private List<TileObjData> m_tileObjList = new List<TileObjData>();
+        private List<GameObject> m_tileObjToBeRemoved = new List<GameObject>();
 
         private static List<Vector3> s_vertices;
         private List<Vector2> m_uv; //NOTE: this is the only one not static because it's needed to update the animated tiles
@@ -84,9 +111,9 @@ namespace CreativeSpore.SuperTilemapEditor
             public IBrush Brush;
         }
         private List<AnimTileData> m_animatedTiles = new List<AnimTileData>();
-        #endregion
+#endregion
 
-        #region Monobehaviour Methods
+#region Monobehaviour Methods
 
         private MaterialPropertyBlock m_matPropBlock;
         void UpdateMaterialPropertyBlock()
@@ -130,15 +157,7 @@ namespace CreativeSpore.SuperTilemapEditor
         void OnWillRenderObject()
         {
             if (!ParentTilemap.Tileset)
-                return;
-
-            //Fix strange case where two materials were being used, breaking lighting
-            if (m_meshRenderer.sharedMaterials.Length > 1)
-            {
-                Debug.LogWarning("Fixing TileChunk with multiple materials!");
-                m_meshRenderer.sharedMaterials = new Material[] { m_meshRenderer.sharedMaterials [0]};
-            }
-            //
+                return;            
 
             if (ParentTilemap.PixelSnap && ParentTilemap.Material.HasProperty("PixelSnap"))
             {
@@ -204,6 +223,7 @@ namespace CreativeSpore.SuperTilemapEditor
 
         // This is needed to refresh tilechunks after undo / redo actions
         static bool s_isOnValidate = false; // fix issue when destroying unused resources from the invalidate call
+#if UNITY_EDITOR
         void OnValidate()
         {
             Event e = Event.current;
@@ -211,22 +231,34 @@ namespace CreativeSpore.SuperTilemapEditor
             {
                 _DoDuplicate();
             }
-#if UNITY_EDITOR
+
+            EditorApplication.update -= DoLateOnValidate;
+            EditorApplication.update += DoLateOnValidate;            
+        }
+
+        private void DoLateOnValidate()
+        {
+            EditorApplication.update -= DoLateOnValidate;
+
+            if (!this || !ParentTilemap)
+                return;
+            //Debug.Log("DoLateOnValidate " + ParentTilemap.name + "/" + name, gameObject);
+
             // fix prefab preview
-            if (UnityEditor.PrefabUtility.GetPrefabType(gameObject) == UnityEditor.PrefabType.Prefab)
+            if (EditorCompatibilityUtils.IsPrefab(gameObject))
             {
                 m_needsRebuildMesh = true;
                 UpdateMesh();
             }
             else
-#endif
             {
                 m_needsRebuildMesh = true;
                 m_needsRebuildColliders = true;
-                if(ParentTilemap) //NOTE: this is null sometimes in Unity 2017.2.0b4. It happens when the brush is changed, so maybe it's related with the brush but transform.parent is null.
+                if (ParentTilemap) //NOTE: this is null sometimes in Unity 2017.2.0b4. It happens when the brush is changed, so maybe it's related with the brush but transform.parent is null.
                     ParentTilemap.UpdateMesh();
             }
         }
+#endif
 
         private void _DoDuplicate()
         {
@@ -272,9 +304,17 @@ namespace CreativeSpore.SuperTilemapEditor
 #endif
             }
 #endif
-                m_meshRenderer = GetComponent<MeshRenderer>();
+            m_meshRenderer = GetComponent<MeshRenderer>();
             m_meshFilter = GetComponent<MeshFilter>();
             m_meshCollider = GetComponent<MeshCollider>();
+
+            //Fix strange case where two materials were being used, breaking lighting
+            if (m_meshRenderer.sharedMaterials.Length > 1)
+            {
+                Debug.LogWarning("Fixing TileChunk with multiple materials!");
+                m_meshRenderer.sharedMaterials = new Material[] { m_meshRenderer.sharedMaterials[0] };
+            }
+            //
 
             if (m_tileDataList == null || m_tileDataList.Count != m_width * m_height)
             {
@@ -310,13 +350,13 @@ namespace CreativeSpore.SuperTilemapEditor
                 EditorUtility.SetSelectedWireframeHidden(m_meshRenderer, true);
 #endif
             }
-#endif            
+#endif
             m_needsRebuildMesh = true;
             m_needsRebuildColliders = true;
         }
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
         /// <summary>
         /// This fix should be called on next update after updating the MeshCollider (sharedMesh, convex or isTrigger property). 
