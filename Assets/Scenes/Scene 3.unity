@@ -5401,13 +5401,13 @@ MonoBehaviour:
   m_physicMaterial2D: {fileID: 0}
   m_cellSize: {x: 1, y: 1}
   m_mapBounds:
-    m_Center: {x: 282.5, y: 277.5, z: 0}
-    m_Extent: {x: 292.5, y: 282.5, z: 0}
+    m_Center: {x: 0, y: 0.5, z: 0}
+    m_Extent: {x: 10, y: 5.5, z: 0}
   m_tileset: {fileID: 11400000, guid: f938c79bea634dd4f87b06cce11ef464, type: 2}
   m_minGridX: -10
   m_minGridY: -5
-  m_maxGridX: 574
-  m_maxGridY: 559
+  m_maxGridX: 9
+  m_maxGridY: 5
   m_parentTilemapGroup: {fileID: 0}
   m_parallaxFactor: {x: 1, y: 1}
   m_chunkRendererProperties:
