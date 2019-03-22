@@ -11,9 +11,7 @@ GameObject:
   - component: {fileID: 4951224612651712}
   - component: {fileID: 20526812412345740}
   - component: {fileID: 81816328130172530}
-  - component: {fileID: 1101633708939330676}
   - component: {fileID: 7798630904249903006}
-  - component: {fileID: 1353126346013331008}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -55,7 +53,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9997951
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -73,7 +71,7 @@ Camera:
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -85,19 +83,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889662696545740}
   m_Enabled: 1
---- !u!114 &1101633708939330676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889662696545740}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f08a6f40d2ec4de981f811bfc829f87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TexturePixelsPerWorldUnit: 16
 --- !u!114 &7798630904249903006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,15 +103,3 @@ MonoBehaviour:
   m_CropFrameX: 1
   m_CropFrameY: 1
   m_StretchFill: 1
---- !u!114 &1353126346013331008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889662696545740}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f29a99a45516c074d8be8d37f8bca343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
