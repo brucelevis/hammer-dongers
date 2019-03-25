@@ -39,6 +39,20 @@ public class TileMatrix {
 				}
 	}
 
+	public TileBehaviour GetRandomTile () {
+		int x = Random.Range (0, columns);
+		int y = Random.Range (0, rows);
+		TileBehaviour tile = matrix [x, y];
+
+		return tile == null || tile.Cracked ? GetRandomTile() : tile;
+	}
+
+	public TileBehaviour GetRandomAvailableTile() {
+		TileBehaviour tile = GetRandomTile();
+
+		return tile.Interactuable != null ? GetRandomAvailableTile () : tile;
+	}
+
 	public static int CompareTileCoordinates(TileBehaviour a, TileBehaviour b) {
 		if (a.x == b.x && a.y == b.y)
 			return 0;

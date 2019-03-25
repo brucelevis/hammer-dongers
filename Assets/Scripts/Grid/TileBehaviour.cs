@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TileBehaviour : MonoBehaviour {
-	public bool cracked;
+	public bool Cracked;
 	Animator animator;
 	public float x, y;
 	public float timer = 3;
 	public int CollisionCounter = 0;
+	public GameObject Interactuable;
 	GridBehaviour grid;
 
 	void Awake () {
@@ -24,14 +25,14 @@ public class TileBehaviour : MonoBehaviour {
 
 	public void Crack ()
 	{
-		if (cracked)
+		if (Cracked)
 			return;
-		cracked = true;
+		Cracked = true;
 		animator.SetBool ("Cracked", true);
 	}
 
 	public void Update () {
-		if (cracked)
+		if (Cracked)
 			return;
 		ConsumeTimer ();
 	}
@@ -92,6 +93,11 @@ public class TileBehaviour : MonoBehaviour {
 
 	public override string ToString ()
 	{
-		return "{ x: " + this.x + ", y: " + this.y + ", cracked: " + this.cracked + " }";
+		return "{ x: " + this.x + ", y: " + this.y + ", cracked: " + this.Cracked + " }";
+	}
+
+	public void SetInteractuable (GameObject type)
+	{
+		Interactuable = GameObject.Instantiate (type, this.transform);
 	}
 }

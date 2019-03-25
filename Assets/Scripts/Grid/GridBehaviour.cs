@@ -9,6 +9,11 @@ public class GridBehaviour : MonoBehaviour {
 	public Vector2[] spawnPoints = { new Vector2(-7, 0.4f), new Vector2(7, 0.4f)};
 	public TileMatrix matrix;
 	public bool IsTileTimerDisabled;
+	public int NumberOfInteractuables;
+
+	[SerializeField]
+	public List<GameObject> InteractuableTypes;
+
 	List<List<TileBehaviour>> subsets;
 	STETilemap tilemap;
 
@@ -28,6 +33,7 @@ public class GridBehaviour : MonoBehaviour {
 		subsets = new List<List<TileBehaviour>> ();
 		tilemap = GameObject.Find("Grid").GetComponent<STETilemap>();
 		SetMatrix ();
+		SetInteractuables ();
 	}
 
 	public void Crack (TileBehaviour origin)
@@ -36,7 +42,7 @@ public class GridBehaviour : MonoBehaviour {
 		TileBehaviour[] adjacents = GetAdjacents (origin);
 
 		foreach(TileBehaviour tile in adjacents) {
-			if (tile != null && !(tile.cracked || IsContained (tile))) {
+			if (tile != null && !(tile.Cracked || IsContained (tile))) {
 				subsets.Add (GetSet (tile, new List<TileBehaviour>()));
 			}
 		}
@@ -73,7 +79,7 @@ public class GridBehaviour : MonoBehaviour {
 			result.Add (origin);	
 
 		foreach(TileBehaviour tile in adjacents) {
-			if (tile != null && !(tile.cracked || IsContained (tile, visited))) {
+			if (tile != null && !(tile.Cracked || IsContained (tile, visited))) {
 				visited = visited.Concat (result).ToList ();
 				result = result.Concat (GetSet (tile, visited)).ToList();
 			}
@@ -107,8 +113,6 @@ public class GridBehaviour : MonoBehaviour {
 		return false;
 	}
 
-
-
 	private TileBehaviour GetTile(float x, float y) {
 		return matrix.GetTile (x, y);
 	}
@@ -118,5 +122,20 @@ public class GridBehaviour : MonoBehaviour {
 		foreach (List<TileBehaviour> tiles in subsets)
 			tiles.Clear ();
 		subsets.Clear ();
+	}
+
+	private void SetInteractuables ()
+	{
+		for (int i = 0; i < NumberOfInteractuables; i++) {
+			
+			GameObject type = InteractuableTypes[Random.Range(0, InteractuableTypes.Count - 1)];
+			TileBehaviour tile = GetRandomAvailableTile ();
+			tile.SetInteractuable (type);
+		}
+	}
+
+	private TileBehaviour GetRandomAvailableTile ()
+	{
+		return matrix.GetRandomAvailableTile ();
 	}
 }

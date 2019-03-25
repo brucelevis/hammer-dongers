@@ -27,10 +27,6 @@ public class PlayerBehaviour : MonoBehaviour {
 		spriteEffector = GetComponent<SpriteEffector> ();
 	}
 
-	void Update() {
-		transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.y);
-	}
-
 	public void Reset ()
 	{
 		var groundChecker = GetComponentInChildren<GroundChecker> ();
