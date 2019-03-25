@@ -128,7 +128,7 @@ public class GridBehaviour : MonoBehaviour {
 	{
 		for (int i = 0; i < NumberOfInteractuables; i++) {
 			
-			GameObject type = InteractuableTypes[Random.Range(0, InteractuableTypes.Count - 1)];
+			GameObject type = InteractuableTypes[Random.Range(0, InteractuableTypes.Count)];
 			TileBehaviour tile = GetRandomAvailableTile ();
 			tile.SetInteractuable (type);
 		}

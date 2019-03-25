@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class TileBehaviour : MonoBehaviour {
 	public bool Cracked;
-	Animator animator;
 	public float x, y;
 	public float timer = 3;
 	public int CollisionCounter = 0;
-	public GameObject Interactuable;
+	public GameObject Interactable;
+	public bool ActiveInteractable = false;
+	Animator animator;
+
+	private InteractableBehaviour _interactableBehaviour;
 	GridBehaviour grid;
 
 	void Awake () {
@@ -98,6 +101,25 @@ public class TileBehaviour : MonoBehaviour {
 
 	public void SetInteractuable (GameObject type)
 	{
-		Interactuable = GameObject.Instantiate (type, this.transform);
+		ActiveInteractable = true;
+		Interactable = GameObject.Instantiate (type, this.transform);
+		_interactableBehaviour = Interactable.GetComponent<InteractableBehaviour> ();
+	}
+
+	void InteractableHit ()
+	{
+		_interactableBehaviour.OnHit ();
+		ActiveInteractable = false;
+	}
+
+	public void OnHit ()
+	{
+		if (ActiveInteractable) {
+			InteractableHit ();
+			return;
+		}	
+
+		Crack ();
+		grid.Crack (this);
 	}
 }

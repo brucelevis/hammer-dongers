@@ -24,8 +24,7 @@ public class HammerCollision : MonoBehaviour {
 			AudioManager.playSFX("hit", 0.4f, true);
 			var tile = collider.GetComponent<TileBehaviour> ();
 
-			tile.Crack ();
-			grid.Crack (tile);
+			tile.OnHit ();
 		}
 	
 		if (collider.gameObject.tag == "Player Hitbox") {

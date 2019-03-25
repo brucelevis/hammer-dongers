@@ -40,8 +40,8 @@ public class TileMatrix {
 	}
 
 	public TileBehaviour GetRandomTile () {
-		int x = Random.Range (0, columns);
-		int y = Random.Range (0, rows);
+		int x = Random.Range (0, columns + 1);
+		int y = Random.Range (0, rows + 1);
 		TileBehaviour tile = matrix [x, y];
 
 		return tile == null || tile.Cracked ? GetRandomTile() : tile;
@@ -50,7 +50,7 @@ public class TileMatrix {
 	public TileBehaviour GetRandomAvailableTile() {
 		TileBehaviour tile = GetRandomTile();
 
-		return tile.Interactuable != null ? GetRandomAvailableTile () : tile;
+		return tile.Interactable != null ? GetRandomAvailableTile () : tile;
 	}
 
 	public static int CompareTileCoordinates(TileBehaviour a, TileBehaviour b) {
